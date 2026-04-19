@@ -123,9 +123,9 @@ header{border-bottom:1px solid var(--border);position:sticky;top:0;background:va
 .articles-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
 .article-card{background:var(--card);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:border-color .3s,transform .3s,box-shadow .3s;border-radius:3px;position:relative;}
 .article-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 12px 36px rgba(200,16,46,.07);}
-.article-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1.1fr 1fr;}
+.article-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1.1fr 1fr;min-height:320px;}
 .art-img-wrap{overflow:hidden;background:var(--bg3);position:relative;height:160px;}
-.article-card.featured .art-img-wrap{height:100%;min-height:220px;}
+.article-card.featured .art-img-wrap{height:100%;min-height:320px;}
 .art-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.4,0,.2,1);}
 .article-card:hover .art-img{transform:scale(1.04);}
 .art-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--text3);background:var(--bg3);}
@@ -223,7 +223,7 @@ footer{border-top:2px solid var(--border);padding:24px 40px;display:flex;align-i
 #article-page{max-width:780px;margin:0 auto;padding:48px 40px 80px;}
 .ap-back{font-family:'DM Sans',sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);background:none;border:none;cursor:pointer;padding:0;margin-bottom:28px;display:flex;align-items:center;gap:6px;transition:color .2s;}
 .ap-back:hover{color:var(--accent);}
-.ap-img{width:100%;max-height:420px;object-fit:cover;margin-bottom:24px;border:1px solid var(--border);border-radius:3px;cursor:zoom-in;}
+.ap-img{width:100%;max-height:520px;object-fit:cover;margin-bottom:24px;border:1px solid var(--border);border-radius:3px;cursor:zoom-in;}
 .ap-meta{font-family:'DM Sans',sans-serif;font-size:.68rem;color:var(--text2);display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;align-items:center;}
 .ap-cat{color:var(--accent);font-weight:600;}
 .ap-title{font-family:'Playfair Display',serif;font-size:2.3rem;font-weight:900;line-height:1.1;letter-spacing:-.03em;margin-bottom:10px;}
@@ -857,8 +857,8 @@ tbody tr:hover{background:var(--hover);}
       <div id="ap-translate-area"></div>
     </div>
   </div>
-  <div style="height:46px;"></div>
-  <div id="ap-content" style="max-width:780px;margin:0 auto;padding:36px 40px 80px;"></div>
+  <div style="height:54px;"></div>
+  <div id="ap-content" style="max-width:780px;margin:0 auto;padding:28px 40px 80px;"></div>
 </div>
 
 <!-- EDITOR PAGE -->
