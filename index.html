@@ -584,6 +584,44 @@ tbody tr:hover{background:var(--hover);}
   .kpi-grid{grid-template-columns:1fr;}
   .art-img-wrap{height:140px;}
 }
+
+/* ═══ LIVE SCORES ═══ */
+.scores-section{padding:48px 40px;border-bottom:1px solid var(--border);}
+.scores-header-row{display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:10px;border-bottom:2px solid var(--text);}
+.scores-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;letter-spacing:-.02em;flex:1;}
+.scores-date{font-family:'DM Sans',sans-serif;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);}
+.scores-refresh-btn{font-family:'DM Sans',sans-serif;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:500;cursor:pointer;background:none;border:none;transition:opacity .2s;display:flex;align-items:center;gap:5px;}
+.scores-refresh-btn:hover{opacity:.7;}
+.scores-refresh-btn .spin{display:inline-block;}
+.scores-refresh-btn.loading .spin{animation:spin .7s linear infinite;}
+.scores-tabs{display:flex;gap:0;flex-wrap:nowrap;overflow-x:auto;margin-bottom:20px;border-bottom:1px solid var(--border);-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.scores-tabs::-webkit-scrollbar{display:none;}
+.scores-tab-btn{font-family:'DM Sans',sans-serif;font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;padding:9px 16px;cursor:pointer;background:none;border:none;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;}
+.scores-tab-btn:hover{color:var(--text2);}
+.scores-tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.scores-league-panel{display:none;}
+.scores-league-panel.active{display:block;}
+.scores-list{display:flex;flex-direction:column;gap:2px;}
+.score-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:3px;transition:border-color .2s;cursor:default;}
+.score-row:hover{border-color:var(--border2);}
+.score-home{font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:var(--text);text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.score-away{font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;color:var(--text);text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.score-center{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;}
+.score-result{font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:var(--text);letter-spacing:.04em;min-width:52px;text-align:center;}
+.score-status{font-family:'DM Sans',sans-serif;font-size:.56rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border-radius:2px;}
+.score-status.live{background:rgba(200,16,46,.15);color:var(--accent);border:1px solid rgba(200,16,46,.3);animation:scorePulse 1.5s ease-in-out infinite;}
+.score-status.ft{background:rgba(34,197,94,.1);color:var(--success);border:1px solid rgba(34,197,94,.25);}
+.score-status.sched{background:var(--bg3);color:var(--text3);border:1px solid var(--border2);}
+.score-status.ht{background:rgba(245,158,11,.12);color:var(--warn);border:1px solid rgba(245,158,11,.3);}
+@keyframes scorePulse{0%,100%{opacity:1;}50%{opacity:.55;}}
+.scores-empty{text-align:center;padding:36px 20px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text3);}
+.scores-empty-icon{font-size:1.8rem;margin-bottom:8px;}
+.scores-sofascore-link{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:16px;padding:10px 18px;border:1px solid var(--border2);color:var(--text2);text-decoration:none;font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:2px;transition:all .2s;width:fit-content;margin-left:auto;margin-right:auto;}
+.scores-sofascore-link:hover{border-color:var(--accent);color:var(--accent);}
+.scores-skeleton{display:flex;flex-direction:column;gap:2px;}
+.score-skel-row{height:42px;background:var(--bg3);border-radius:3px;animation:shimmer 1.5s ease-in-out infinite;border:1px solid var(--border);}
+@media(max-width:860px){.scores-section{padding:32px 18px;}.score-home,.score-away{font-size:.76rem;}.score-result{font-size:.9rem;}}
+@media(max-width:520px){.scores-section{padding:24px 14px;}.score-home,.score-away{font-size:.72rem;}}
 </style>
 </head>
 <body>
@@ -601,6 +639,7 @@ tbody tr:hover{background:var(--hover);}
     <div class="drawer-item" onclick="goHome();closeDrawer()"><span class="drawer-item-icon">🏠</span>Home</div>
     <div class="drawer-item" onclick="goHome();closeDrawer();setTimeout(()=>document.getElementById('articles')?.scrollIntoView({behavior:'smooth'}),300)"><span class="drawer-item-icon">📰</span>Articles</div>
 
+    <div class="drawer-item" onclick="goHome();closeDrawer();setTimeout(()=>document.getElementById('scores')?.scrollIntoView({behavior:'smooth'}),300)"><span class="drawer-item-icon">⚽</span>Live Scores</div>
     <div class="drawer-item" onclick="goHome();closeDrawer();setTimeout(()=>document.getElementById('hub')?.scrollIntoView({behavior:'smooth'}),300)"><span class="drawer-item-icon">🌍</span>News Hub</div>
     <div class="drawer-item" onclick="goHome();closeDrawer();setTimeout(()=>document.getElementById('about')?.scrollIntoView({behavior:'smooth'}),300)"><span class="drawer-item-icon">👤</span>About</div>
     <a href="https://twitter.com/TheObserverFC" target="_blank" class="drawer-item"><span class="drawer-item-icon">𝕏</span>Follow on X</a>
@@ -645,9 +684,9 @@ tbody tr:hover{background:var(--hover);}
   <a class="mob-nav-item" href="https://twitter.com/TheObserverFC" target="_blank">
     <span class="mob-nav-item-icon">𝕏</span>Follow
   </a>
-  <a class="mob-nav-item" href="https://www.youtube.com/channel/UCCDM7-1h29_QZvu9aKvsBPg" target="_blank">
-    <span class="mob-nav-item-icon">▶</span>YouTube
-  </a>
+  <button class="mob-nav-item" onclick="goHome();setTimeout(()=>document.getElementById('scores')?.scrollIntoView({behavior:'smooth'}),300)">
+    <span class="mob-nav-item-icon">⚽</span>Scores
+  </button>
 </nav>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
@@ -732,6 +771,26 @@ tbody tr:hover{background:var(--hover);}
     <div class="articles-grid" id="articles-grid"></div>
   </section>
 
+
+
+  <section class="scores-section" id="scores">
+    <div class="scores-header-row">
+      <h2 class="scores-title">Live Scores</h2>
+      <span class="scores-date" id="scores-date"></span>
+      <button class="scores-refresh-btn" id="scores-refresh-btn" onclick="loadScores()">
+        <span class="spin">↻</span> Refresh
+      </button>
+    </div>
+    <div class="scores-tabs" id="scores-tabs"></div>
+    <div id="scores-content">
+      <div class="scores-skeleton">
+        <div class="score-skel-row"></div><div class="score-skel-row"></div><div class="score-skel-row"></div>
+      </div>
+    </div>
+    <a href="https://www.sofascore.com" target="_blank" rel="noopener" class="scores-sofascore-link" style="margin-top:18px;">
+      ⚽ Full scores on SofaScore →
+    </a>
+  </section>
 
   <section class="hub-section" id="hub">
     <div class="section-header">
@@ -1208,6 +1267,7 @@ let currentUser = null;
 let activityLog = [];
 let pendingDeleteId = null;
 let lastDigestText = '';
+let _navLock = false;
 
 // ═══ THEME ═══
 const htmlEl = document.documentElement;
@@ -1401,8 +1461,12 @@ async function goToArticleBySlug(slug){
 }
 
 function _openArticlePage(art){
+  // Prevent double-render: hashchange fires when we set location.hash
+  // We use a flag to skip the handler that fires immediately after
+  _navLock = true;
   closeAllModals();
   location.hash = 'article/' + (art.slug||slugify(art.title));
+  setTimeout(()=>{ _navLock = false; }, 80);
   const imgUrl=art.image&&art.image.startsWith('http')?art.image:'https://pbs.twimg.com/profile_images/2042261239049412608/ATNWHl9q_400x400.jpg';
   setOGTags(art.title+' — The Observer FC',art.excerpt||'Read on The Observer FC',imgUrl,window.location.href);
   showPage('article-page');
@@ -1523,16 +1587,17 @@ function copyLink(){const inp=document.getElementById('ap-share-input');if(!inp)
 
 // Hash routing for GitHub Pages
 function handleHashRoute(){
+  if(_navLock) return; // ignore the immediate hashchange triggered by _openArticlePage
   const hash=location.hash.replace('#','');
   if(hash.startsWith('article/')){
     const slug=hash.replace('article/','').replace(/\/$/,'');
     goToArticleBySlug(slug);
-  } else if(!hash){
+  } else if(!hash||hash==='#'){
     showPage('main-site');document.title='The Observer FC';resetOGTags();
   }
 }
 window.addEventListener('hashchange', handleHashRoute);
-window.addEventListener('popstate', handleHashRoute);
+// popstate is handled via hashchange since we use hash routing
 
 // ═══ RENDER ═══
 function render(){
@@ -1963,6 +2028,125 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCtxMenu();});
 
+
+// ═══ LIVE SCORES ═══
+const SCORE_LEAGUES = [
+  {name:'Premier League',      theName:'English Premier League',   sofa:'football/england/premier-league',  id:'4328'},
+  {name:'La Liga',             theName:'Spanish La Liga',          sofa:'football/spain/laliga',             id:'4335'},
+  {name:'Champions League',    theName:'UEFA Champions League',    sofa:'football/europe/champions-league',  id:'4480'},
+  {name:'Serie A',             theName:'Italian Serie A',          sofa:'football/italy/serie-a',            id:'4332'},
+  {name:'Bundesliga',          theName:'German Bundesliga',        sofa:'football/germany/bundesliga',       id:'4331'},
+  {name:'Ligue 1',             theName:'French Ligue 1',           sofa:'football/france/ligue-1',           id:'4334'},
+  {name:'Europa League',       theName:'UEFA Europa League',       sofa:'football/europe/europa-league',     id:'4406'},
+];
+let _scoresData = {}; // league name → matches[]
+let _scoresAutoRefresh = null;
+let _activeSTab = 0;
+
+async function loadScores(){
+  const btn = document.getElementById('scores-refresh-btn');
+  const content = document.getElementById('scores-content');
+  if(btn) btn.classList.add('loading');
+  if(content) content.innerHTML = '<div class="scores-skeleton">' + '<div class="score-skel-row"></div>'.repeat(5) + '</div>';
+
+  // Set date label
+  const now = new Date();
+  const dateEl = document.getElementById('scores-date');
+  if(dateEl) dateEl.textContent = now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  const dateStr = now.toISOString().split('T')[0];
+  
+  try{
+    // Fetch all soccer events for today from TheSportsDB (free, CORS-enabled)
+    const r = await fetch(`https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${dateStr}&s=Soccer`,{signal:AbortSignal.timeout(8000)});
+    const data = await r.json();
+    const events = data.events || [];
+
+    // Group by our known leagues
+    _scoresData = {};
+    for(const lg of SCORE_LEAGUES){
+      const matches = events.filter(e => {
+        const n = (e.strLeague||'').toLowerCase();
+        return n.includes(lg.theName.toLowerCase().split(' ').slice(-2).join(' ').toLowerCase()) ||
+               n.includes(lg.theName.toLowerCase().split(' ')[0].toLowerCase());
+      });
+      _scoresData[lg.name] = matches;
+    }
+
+    renderScoresTabs();
+    renderScoresPanel(_activeSTab);
+  } catch(e){
+    console.warn('Scores fetch:',e);
+    if(content) content.innerHTML = `<div class="scores-empty"><div class="scores-empty-icon">📡</div>Could not load scores. Check your connection.</div>`;
+  }
+  if(btn) btn.classList.remove('loading');
+
+  // Auto-refresh every 60s
+  clearTimeout(_scoresAutoRefresh);
+  _scoresAutoRefresh = setTimeout(loadScores, 60000);
+}
+
+function renderScoresTabs(){
+  const tabs = document.getElementById('scores-tabs');
+  if(!tabs) return;
+  tabs.innerHTML = SCORE_LEAGUES.map((lg,i)=>{
+    const count = (_scoresData[lg.name]||[]).length;
+    return `<button class="scores-tab-btn${i===_activeSTab?' active':''}" onclick="switchScoreTab(${i})">${lg.name}${count?` <span style="opacity:.5;font-size:.55rem">${count}</span>`:''}</button>`;
+  }).join('');
+}
+
+function switchScoreTab(i){
+  _activeSTab = i;
+  renderScoresTabs();
+  renderScoresPanel(i);
+}
+
+function renderScoresPanel(i){
+  const content = document.getElementById('scores-content');
+  if(!content) return;
+  const lg = SCORE_LEAGUES[i];
+  const matches = _scoresData[lg.name] || [];
+  
+  if(!matches.length){
+    content.innerHTML = `<div class="scores-empty"><div class="scores-empty-icon">⚽</div>No matches today for ${lg.name}.</div>`;
+    return;
+  }
+  
+  const rows = matches.map(m => {
+    const homeScore = m.intHomeScore ?? '–';
+    const awayScore = m.intAwayScore ?? '–';
+    const hasScore  = m.intHomeScore !== null && m.intHomeScore !== undefined;
+    const status    = getMatchStatus(m);
+    const statusClass = status.cls;
+    const scoreDisp = hasScore ? `${homeScore} – ${awayScore}` : m.strTime ? formatMatchTime(m.strTime) : '–';
+    return `<div class="score-row">
+      <div class="score-home">${esc(m.strHomeTeam||'')}</div>
+      <div class="score-center">
+        <div class="score-result">${scoreDisp}</div>
+        <div class="score-status ${statusClass}">${status.label}</div>
+      </div>
+      <div class="score-away">${esc(m.strAwayTeam||'')}</div>
+    </div>`;
+  }).join('');
+  
+  content.innerHTML = `<div class="scores-list">${rows}</div>`;
+}
+
+function getMatchStatus(m){
+  const status = (m.strStatus||'').toLowerCase();
+  if(status==='ft'||status==='aet'||status==='pens') return {label:'FT',cls:'ft'};
+  if(status==='ht') return {label:'HT',cls:'ht'};
+  if(status==='live'||status==='1h'||status==='2h'||status==='et') return {label:'LIVE',cls:'live'};
+  if(m.intHomeScore!==null&&m.intHomeScore!==undefined) return {label:'FT',cls:'ft'};
+  return {label:'NS',cls:'sched'};
+}
+
+function formatMatchTime(t){
+  if(!t) return '–';
+  // t is like "20:45:00+00:00" or "20:45"
+  try{ return t.substring(0,5); }catch(e){ return t; }
+}
+
 // ═══ UTILS ═══
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
@@ -1985,6 +2169,7 @@ async function init(){
     await goToArticleBySlug(slug);
   }
   loadHub();
+  loadScores();
   initContextMenu();
   // Show mobile bottom nav
   const mbn=document.getElementById('mobile-bottom-nav');
