@@ -123,9 +123,9 @@ header{border-bottom:1px solid var(--border);position:sticky;top:0;background:va
 .articles-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
 .article-card{background:var(--card);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:border-color .3s,transform .3s,box-shadow .3s;border-radius:3px;position:relative;}
 .article-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 12px 36px rgba(200,16,46,.07);}
-.article-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1.1fr 1fr;min-height:320px;}
+.article-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1.1fr 1fr;}
 .art-img-wrap{overflow:hidden;background:var(--bg3);position:relative;height:160px;}
-.article-card.featured .art-img-wrap{height:100%;min-height:320px;}
+.article-card.featured .art-img-wrap{height:100%;min-height:220px;}
 .art-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.4,0,.2,1);}
 .article-card:hover .art-img{transform:scale(1.04);}
 .art-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--text3);background:var(--bg3);}
@@ -223,7 +223,7 @@ footer{border-top:2px solid var(--border);padding:24px 40px;display:flex;align-i
 #article-page{max-width:780px;margin:0 auto;padding:48px 40px 80px;}
 .ap-back{font-family:'DM Sans',sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);background:none;border:none;cursor:pointer;padding:0;margin-bottom:28px;display:flex;align-items:center;gap:6px;transition:color .2s;}
 .ap-back:hover{color:var(--accent);}
-.ap-img{width:100%;max-height:520px;object-fit:cover;margin-bottom:24px;border:1px solid var(--border);border-radius:3px;cursor:zoom-in;}
+.ap-img{width:100%;max-height:420px;object-fit:cover;margin-bottom:24px;border:1px solid var(--border);border-radius:3px;cursor:zoom-in;}
 .ap-meta{font-family:'DM Sans',sans-serif;font-size:.68rem;color:var(--text2);display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;align-items:center;}
 .ap-cat{color:var(--accent);font-weight:600;}
 .ap-title{font-family:'Playfair Display',serif;font-size:2.3rem;font-weight:900;line-height:1.1;letter-spacing:-.03em;margin-bottom:10px;}
@@ -622,6 +622,23 @@ tbody tr:hover{background:var(--hover);}
 .score-skel-row{height:42px;background:var(--bg3);border-radius:3px;animation:shimmer 1.5s ease-in-out infinite;border:1px solid var(--border);}
 @media(max-width:860px){.scores-section{padding:32px 18px;}.score-home,.score-away{font-size:.76rem;}.score-result{font-size:.9rem;}}
 @media(max-width:520px){.scores-section{padding:24px 14px;}.score-home,.score-away{font-size:.72rem;}}
+
+/* ═══ IMAGE UPLOAD WIDGET ═══ */
+.img-upload-card{position:relative;}
+.img-drop-zone{border:2px dashed var(--border2);border-radius:3px;background:var(--bg3);cursor:pointer;transition:all .2s;overflow:hidden;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;}
+.img-drop-zone:hover,.img-drop-zone.drag-over{border-color:var(--accent);background:rgba(200,16,46,.04);}
+.img-drop-zone.uploading{pointer-events:none;opacity:.7;}
+.img-drop-inner{display:flex;flex-direction:column;align-items:center;gap:5px;padding:16px;text-align:center;}
+.img-drop-icon{font-size:1.4rem;line-height:1;}
+.img-drop-label{font-family:'DM Sans',sans-serif;font-size:.72rem;color:var(--text2);font-weight:500;}
+.img-drop-sub{font-family:'DM Sans',sans-serif;font-size:.6rem;color:var(--text3);}
+.img-upload-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--accent);border-radius:0 0 3px 3px;transition:width .25s;width:0%;}
+.img-preview-cover{position:relative;width:100%;}
+.img-preview-cover img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border-radius:3px;border:1px solid var(--border);}
+.img-preview-cover-actions{position:absolute;top:6px;right:6px;display:flex;gap:5px;}
+.img-cover-btn{background:rgba(0,0,0,.65);color:#fff;border:none;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:.6rem;font-weight:600;padding:3px 8px;cursor:pointer;backdrop-filter:blur(4px);transition:background .2s;}
+.img-cover-btn:hover{background:var(--accent);}
+.img-cover-btn.replace{background:rgba(0,0,0,.65);}
 </style>
 </head>
 <body>
@@ -857,8 +874,8 @@ tbody tr:hover{background:var(--hover);}
       <div id="ap-translate-area"></div>
     </div>
   </div>
-  <div style="height:54px;"></div>
-  <div id="ap-content" style="max-width:780px;margin:0 auto;padding:28px 40px 80px;"></div>
+  <div style="height:46px;"></div>
+  <div id="ap-content" style="max-width:780px;margin:0 auto;padding:36px 40px 80px;"></div>
 </div>
 
 <!-- EDITOR PAGE -->
@@ -951,18 +968,34 @@ tbody tr:hover{background:var(--hover);}
           </div>
         </div>
       </div>
-      <div class="sidebar-card">
-        <div class="sidebar-card-title">Cover Image URL</div>
+      <div class="sidebar-card img-upload-card" id="img-upload-card">
+        <div class="sidebar-card-title">Cover Image</div>
         <div class="sidebar-card-body">
-          <div class="sg">
-            <label>Image URL</label>
-            <input type="url" id="f-image-url" placeholder="https://i.imgur.com/…" oninput="previewImgUrl(this.value)" style="width:100%;padding:8px 11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.8rem;outline:none;border-radius:2px;transition:border-color .2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border2)'"/>
+          <!-- Hidden stored URL (source of truth) -->
+          <input type="hidden" id="f-image-url"/>
+          <!-- Drop zone (shown when no image) -->
+          <div class="img-drop-zone" id="img-drop-zone"
+            onclick="document.getElementById('f-img-file').click()"
+            ondragover="event.preventDefault();this.classList.add('drag-over')"
+            ondragleave="this.classList.remove('drag-over')"
+            ondrop="handleImgDrop(event)">
+            <div class="img-drop-inner" id="img-drop-inner">
+              <div class="img-drop-icon">🖼</div>
+              <div class="img-drop-label">Click or drag image here</div>
+              <div class="img-drop-sub">JPG, PNG, WebP — stored on Supabase</div>
+            </div>
+            <div class="img-upload-progress" id="img-upload-progress"></div>
           </div>
-          <div id="img-url-preview" style="display:none;margin-top:8px;position:relative;">
-            <img id="img-url-img" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:2px;border:1px solid var(--border);display:block;"/>
-            <button onclick="clearImgUrl()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.65);color:#fff;border:none;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:.6rem;font-weight:600;padding:3px 8px;cursor:pointer;">✕</button>
+          <!-- Preview (shown when image set) -->
+          <div class="img-preview-cover" id="img-preview-cover" style="display:none;">
+            <img id="img-preview-img" src="" alt="Cover"/>
+            <div class="img-preview-cover-actions">
+              <button class="img-cover-btn replace" onclick="document.getElementById('f-img-file').click()">↺ Replace</button>
+              <button class="img-cover-btn" onclick="clearCoverImage()">✕</button>
+            </div>
           </div>
-          <p style="font-family:'DM Sans',sans-serif;font-size:.62rem;color:var(--text3);margin-top:7px;line-height:1.6;">Tip: upload to <a href="https://imgur.com/upload" target="_blank" style="color:var(--accent);">imgur.com</a> → right-click image → Copy image address.</p>
+          <input type="file" id="f-img-file" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none" onchange="handleImgFileSelect(event)"/>
+          <div id="img-upload-status" style="font-family:'DM Sans',sans-serif;font-size:.66rem;margin-top:7px;min-height:16px;"></div>
         </div>
       </div>
       <div class="sidebar-card">
@@ -1038,13 +1071,13 @@ tbody tr:hover{background:var(--hover);}
         <div class="admin-page-sub">Version history.</div>
         <div class="patch-list">
           <div class="patch-item">
-            <div class="patch-version">v8.0 — Current</div>
+            <div class="patch-version">v8.1 — Current</div>
             <div class="patch-date">April 2026</div>
             <ul class="patch-changes">
               <li><span class="patch-tag new">new</span> Supabase — real PostgreSQL database, articles visible to ALL visitors worldwide</li>
               <li><span class="patch-tag new">new</span> Netlify Edge Function — Twitter/Discord previews now show article image + title</li>
               <li><span class="patch-tag new">new</span> Real URL routing — article links are /article/slug (not #hash), works with OG</li>
-              <li><span class="patch-tag change">change</span> Cover image: URL input instead of file upload (required for OG tags to work)</li>
+              <li><span class="patch-tag new">new</span> Direct image upload to Supabase Storage — no more Imgur, images are permanent</li>
             </ul>
           </div>
           <div class="patch-item">
@@ -1143,7 +1176,8 @@ tbody tr:hover{background:var(--hover);}
                 <span style="font-family:'DM Sans',sans-serif;font-size:.64rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);">SQL — run once in Supabase SQL Editor</span>
                 <button onclick="copySql()" style="padding:4px 12px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:.64rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all .2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">Copy SQL</button>
               </div>
-              <pre id="sb-sql-block" style="background:var(--bg3);border:1px solid var(--border2);padding:14px;border-radius:3px;font-family:monospace;font-size:.72rem;color:var(--text2);overflow-x:auto;line-height:1.7;white-space:pre;">create table articles (
+              <pre id="sb-sql-block" style="background:var(--bg3);border:1px solid var(--border2);padding:14px;border-radius:3px;font-family:monospace;font-size:.72rem;color:var(--text2);overflow-x:auto;line-height:1.7;white-space:pre;">-- 1. Articles table
+create table articles (
   id uuid default gen_random_uuid() primary key,
   title text not null,
   slug text unique not null,
@@ -1158,7 +1192,18 @@ tbody tr:hover{background:var(--hover);}
   created_at timestamptz default now()
 );
 alter table articles enable row level security;
-create policy "Public read" on articles for select using (status = 'published');</pre>
+create policy "Public read" on articles for select using (status = 'published');
+
+-- 2. Image storage bucket (run in SQL Editor)
+insert into storage.buckets (id, name, public)
+values ('article-images', 'article-images', true);
+
+-- 3. Storage policies (anyone can view, only service role can upload)
+create policy "Public image read" on storage.objects
+  for select using (bucket_id = 'article-images');
+
+create policy "Admin image upload" on storage.objects
+  for insert with check (bucket_id = 'article-images');</pre>
             </div>
             <!-- Netlify env vars for OG tags -->
             <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;font-family:'DM Sans',sans-serif;font-size:.74rem;color:var(--text2);line-height:1.7;">
@@ -1721,8 +1766,7 @@ function openNewEditor(){
   document.getElementById('f-scheduled-at').value='';
   updateEditorStatusPill('published');
   setRteContent('');
-  document.getElementById('f-image-url').value='';
-  document.getElementById('img-url-preview').style.display='none';
+  clearCoverImage();
   const ftEl=document.getElementById('f-time');if(ftEl)ftEl._userEdited=false;
   updateWordCount();
   closeAllModals();showPage('editor-page');
@@ -1741,9 +1785,7 @@ function openEditEditor(artId){
   if(art.scheduled_at)document.getElementById('f-scheduled-at').value=art.scheduled_at;
   updateEditorStatusPill(status);
   setRteContent(art.body||'');
-  document.getElementById('f-image-url').value=art.image||'';
-  if(art.image&&art.image.startsWith('http'))previewImgUrl(art.image);
-  else document.getElementById('img-url-preview').style.display='none';
+  if(art.image&&art.image.startsWith('http')){setCoverImage(art.image);setUploadStatus('');}else{clearCoverImage();}
 
   closeAllModals();showPage('editor-page');
 }
@@ -1782,14 +1824,99 @@ async function saveEditorArticle(){
   }catch(e){showToast('Save failed — check your Service Role Key in Settings.','error');console.error(e);}
 }
 
-// ═══ IMAGE URL PREVIEW ═══
-function previewImgUrl(url){
-  const wrap=document.getElementById('img-url-preview');
-  const img=document.getElementById('img-url-img');
-  if(url&&url.startsWith('http')){img.src=url;img.onerror=()=>{wrap.style.display='none';};img.onload=()=>{wrap.style.display='block';};}
-  else{wrap.style.display='none';}
+// ═══ COVER IMAGE UPLOAD ═══
+function setCoverImage(url){
+  document.getElementById('f-image-url').value = url;
+  const preview = document.getElementById('img-preview-cover');
+  const dropZone = document.getElementById('img-drop-zone');
+  const img = document.getElementById('img-preview-img');
+  img.src = url;
+  preview.style.display = 'block';
+  dropZone.style.display = 'none';
 }
-function clearImgUrl(){document.getElementById('f-image-url').value='';document.getElementById('img-url-preview').style.display='none';}
+function clearCoverImage(){
+  document.getElementById('f-image-url').value = '';
+  document.getElementById('img-preview-cover').style.display = 'none';
+  document.getElementById('img-drop-zone').style.display = 'flex';
+  document.getElementById('img-upload-status').textContent = '';
+  setUploadProgress(0);
+}
+function setUploadProgress(pct){
+  const bar = document.getElementById('img-upload-progress');
+  if(bar) bar.style.width = pct + '%';
+}
+function setUploadStatus(msg, color='var(--text3)'){
+  const el = document.getElementById('img-upload-status');
+  if(el){ el.textContent = msg; el.style.color = color; }
+}
+function handleImgDrop(e){
+  e.preventDefault();
+  document.getElementById('img-drop-zone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if(file && file.type.startsWith('image/')) uploadCoverImage(file);
+}
+function handleImgFileSelect(e){
+  const file = e.target.files[0];
+  if(file) uploadCoverImage(file);
+  e.target.value = '';
+}
+async function uploadCoverImage(file){
+  if(!isSBConfigured()){
+    showToast('Connect Supabase in Settings first.','error');
+    return;
+  }
+  // Validate size (max 5MB)
+  if(file.size > 5 * 1024 * 1024){
+    setUploadStatus('Image too large (max 5MB).','var(--accent)');
+    showToast('Image too large — max 5MB.','error');
+    return;
+  }
+  const zone = document.getElementById('img-drop-zone');
+  zone.classList.add('uploading');
+  setUploadStatus('Uploading…','var(--text2)');
+  setUploadProgress(20);
+
+  const ext = file.name.split('.').pop().toLowerCase() || 'jpg';
+  const filename = `cover-${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+  const {url, serviceKey, anonKey} = getSBConfig();
+  const key = serviceKey || anonKey;
+
+  try{
+    setUploadProgress(40);
+    const uploadRes = await fetch(
+      `${url}/storage/v1/object/article-images/${filename}`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${key}`,
+          'Content-Type': file.type,
+          'x-upsert': 'true',
+        },
+        body: file,
+      }
+    );
+
+    if(!uploadRes.ok){
+      const err = await uploadRes.json().catch(()=>({message:'Upload failed'}));
+      throw new Error(err.message || 'Upload failed — HTTP ' + uploadRes.status);
+    }
+
+    setUploadProgress(80);
+    // Build the permanent public URL
+    const publicUrl = `${url}/storage/v1/object/public/article-images/${filename}`;
+    setUploadProgress(100);
+    setCoverImage(publicUrl);
+    setUploadStatus('✓ Uploaded — image saved permanently.','var(--success)');
+    showToast('Image uploaded ✓','success');
+  } catch(e){
+    setUploadStatus('Upload failed: ' + e.message,'var(--accent)');
+    showToast('Upload failed: ' + e.message,'error');
+    console.error(e);
+  } finally {
+    zone.classList.remove('uploading');
+    setTimeout(() => setUploadProgress(0), 600);
+  }
+}
 
 // ═══ RTE ═══
 function rteCmd(cmd,val){document.getElementById('rte-body').focus();document.execCommand(cmd,false,val||null);}
